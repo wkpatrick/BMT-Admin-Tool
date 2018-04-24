@@ -29,7 +29,7 @@ def count(server, port):
               help="Server of the Elastciserach instance you are attempting to connect to")
 @click.option('--port', default=9200, help='Port of the Elasticsearch instance you are attempting to connect to')
 def send_mapping(server, port):
-    client = Elasticsearch(server, port)
+    client = Elasticsearch(server + ':' + str(port))
     mappings = {
         'mappings': {
             'source': {
