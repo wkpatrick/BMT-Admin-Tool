@@ -20,7 +20,7 @@ def count(server, port):
     client = Elasticsearch(server + ':' + str(port))
 
     book_count = client.count(index=INDEX, doc_type=TYPE, body={"query": {"match_all": {}}})
-    click.echo('Total Books in Libaray: %s' % book_count['count'])
+    click.echo('Total Books in Library: %s' % book_count['count'])
     click.echo('Server: %s' % server)
 
 
@@ -125,7 +125,7 @@ def return_source_count(server, port):
     client = Elasticsearch(server + ':' + str(port))
 
     count = client.count(index=INDEX, doc_type=TYPE, body={"query": {"match_all": {}}})
-    click.echo('Total Books in Libaray: %s' % count['count'])
+    click.echo('Total Books in Library: %s' % count['count'])
     return count['count']
 
 
