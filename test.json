@@ -1,0 +1,12 @@
+{
+	"sources":[
+		{
+			"Title": "test_title",
+			"Author" : "test_author"
+		},
+				{
+			"Title": "test_title2",
+			"Author" : "test_author2"
+		}
+	]
+}
