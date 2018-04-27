@@ -73,29 +73,32 @@ def marc(server, port, file_input):
     # file_count is to get the amount of files for the progress bar
     file_count = 0
     book_count = return_source_count(server, port)
+    data_array = []
 
     reader = MARCReader(file_input)
     for record in reader:
         file_count += 1
+
+        # PyMarc adds a \ to the end of every title, so here we are stripping it
+        title = record.title()
+        title = title[:-1]
+
+        data = {
+            'Title': title,
+            'Author': record.author(),
+            'Date Published': record.pubyear(),
+            'Publisher': record.publisher(),
+            'ISBN': record.isbn()
+        }
+
+        data_array.append(data)
     print(file_count)
 
     file_input.seek(0)
     reader = MARCReader(file_input)
-    with click.progressbar(reader, length=file_count) as bar:
+    with click.progressbar(data_array, length=file_count) as bar:
         for record in bar:
-            # PyMarc adds a \ to the end of every title, so here we are stripping it
-            title = record.title()
-            title = title[:-1]
-
-            data = {
-                'Title': title,
-                'Author': record.author(),
-                'Date Published': record.pubyear(),
-                'Publisher': record.publisher(),
-                'ISBN': record.isbn()
-            }
-
-            client.index(index=INDEX, doc_type=TYPE, id=book_count, body=data)
+            client.index(index=INDEX, doc_type=TYPE, id=book_count, body=record)
             book_count += 1
 
 
